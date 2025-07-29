@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ввод данных</title>
+    <HTA:APPLICATION ID="app" APPLICATIONNAME="Input Data" BORDER="thin" BORDERSTYLE="normal" CAPTION="yes" SHOWINTASKBAR="yes" SINGLEINSTANCE="yes" SYSMENU="yes" WINDOWSTATE="normal" />
+    <script language="VBScript">
+        Sub SubmitData
+            ' Объявляем переменные
+            Dim wiregroupName, section, color, databaseWireName, wireName, signalName1
+
+            ' Получаем значения из полей ввода
+            wiregroupName = document.getElementById("wiregroupName").value
+            section = document.getElementById("section").value
+            color = document.getElementById("color").value
+            wireName = document.getElementById("wireName").value
+            signalName1 = document.getElementById("signalName1").value
+
+            ' Формируем значение для databaseWireName
+            databaseWireName = section & "(" & color & ")"
+
+            ' Проверяем, что все поля заполнены
+            If wiregroupName = "" Or section = "" Or color = "" Or wireName = "" Or signalName1 = "" Then
+                MsgBox "Все поля должны быть заполнены!", vbExclamation, "Ошибка"
+                Exit Sub
+            End If
+
+            ' Передаем данные в основной скрипт
+            Set WshShell = CreateObject("WScript.Shell")
+            WshShell.Run "cscript.exe 123.vbs " & Chr(34) & wiregroupName & Chr(34) & " " & Chr(34) & databaseWireName & Chr(34) & " " & Chr(34) & wireName & Chr(34) & " " & Chr(34) & signalName1 & Chr(34), 1, False
+
+            ' Очищаем поля после отправки (опционально)
+            document.getElementById("wireName").value = ""
+            document.getElementById("signalName1").value = ""
+
+            ' Выводим сообщение об успешной отправке
+            ' MsgBox "Данные успешно отправлены!", vbInformation, "Успех"
+        End Sub
+
+        Sub ResizeWindow
+            ' Устанавливаем размер окна
+            window.resizeTo 300, 500
+        End Sub
+    </script>
+</head>
+<body onload="ResizeWindow">
+    <h3>Введите данные:</h3>
+    <label for="wiregroupName">Тип провода:</label><br>
+    <select id="wiregroupName">
+        <option value="ПУГВнг(А)-LS">ПУГВнг(А)-LS</option>
+        <option value="ПУГВ">ПУГВ</option>
+    </select><br><br>
+
+    <label for="section">Сечение:</label><br>
+    <select id="section">
+        <option value="1х0.75">1х0.75</option>
+        <option value="1х1.5">1х1.5</option>
+        <option value="1х2.5">1х2.5</option>
+    </select><br><br>
+
+    <label for="color">Цвет:</label><br>
+    <select id="color">
+        <option value="синий">синий</option>
+        <option value="белый">белый</option>
+        <option value="красный">красный</option>
+        <option value="черный">черный</option>
+        <option value="коричневый">коричневый</option>
+        <option value="серый">серый</option>
+    </select><br><br>
+
+    <label for="wireName">Имя провода:</label><br>
+    <input type="text" id="wireName" value="N"><br><br>
+
+    <label for="signalName1">Имя цепи:</label><br>
+    <input type="text" id="signalName1" value="N"><br><br>
+
+    <button onclick="SubmitData">Отправить</button>
+</body>
+</html>
