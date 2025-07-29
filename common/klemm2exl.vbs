@@ -1,59 +1,59 @@
 '==============================================
-' Генерация списка клемм XT, вывод и экспорт в Excel
-' Ред. [текущая дата]
+'    XT,     Excel
+' . [ ]
 '==============================================
 
-' Основной код
+'  
 Set App = CreateObject("CT.Application")
 Set Job = App.CreateJobObject
 Set Dev = Job.CreateDeviceObject
 
-' Указываем путь к Excel-файлу (измените на ваш реальный путь)
+'    Excel- (    )
 'Dim excelFilePath
-'excelFilePath = "\\Vt5\niokr\ZAKAZI2016\ZN_1108066\brk66976_241073206.xls"  ' Укажите правильный путь здесь!
+'excelFilePath = "\\Vt5\niokr\ZAKAZI2016\ZN_1108066\brk66976_241073206.xls"  '    !
 
-' Формируем имя файла автоматически
+'    
 Dim excelFilePath
 excelFilePath = GetExcelFileName(Job)
 If excelFilePath = "" Then
     WScript.Quit
 End If
 
-' Получаем ID всех клеммников
+'  ID  
 terminalCount = Job.GetTerminalIds(DevIds)
 
 If terminalCount = 0 Then
-    App.PutInfo 1, "Клеммники не найдены!"
+    App.PutInfo 1, "  !"
     WScript.Quit
 End If
 
-' Обработка данных
+'  
 Dim xtTerminals
 xtTerminals = ProcessTerminals(Job, Dev, DevIds, terminalCount)
 
-' Проверяем, что получили массив перед выводом и экспортом
+' ,       
 If IsArray(xtTerminals) Then
-    ' Выводим массив для проверки
+    '    
     Call ShowArrayBeforeExport(xtTerminals)
     
-    ' Экспорт в Excel с проверкой
-    Call ExportToExcel(xtTerminals, excelFilePath, "Маркировки", "E2")
+    '   Excel  
+    Call ExportToExcel(xtTerminals, excelFilePath, "", "E2")
 Else
-    App.PutInfo 1, "Нет данных для экспорта (XT-клеммники не найдены)"
+    App.PutInfo 1, "    (XT-  )"
 End If
 
-' Завершение
+' 
 Set Dev = Nothing
 Set Job = Nothing
 Set App = Nothing
 WScript.Quit
 
 '==============================================
-' Процедура обработки клеммников
-' Возвращает массив XT клеммников или Nothing
+'   
+'   XT   Nothing
 '==============================================
 Function ProcessTerminals(Job, Dev, DevIds, totalCount)
-    ' 1. Сбор данных
+    ' 1.  
     Dim terminals(), xtTerminals()
     Dim i, j, xtCount
     
@@ -71,11 +71,11 @@ Function ProcessTerminals(Job, Dev, DevIds, totalCount)
     Next
     
     If xtCount = 0 Then
-        ProcessTerminals = Null ' Возвращаем Null вместо Nothing
+        ProcessTerminals = Null '  Null  Nothing
         Exit Function
     End If
     
-    ' 2. Фильтрация XT клеммников
+    ' 2.  XT 
     ReDim xtTerminals(xtCount - 1, 1)
     j = 0
     
@@ -87,7 +87,7 @@ Function ProcessTerminals(Job, Dev, DevIds, totalCount)
         End If
     Next
     
-    ' 3. Сортировка
+    ' 3. 
     Dim temp1, temp2
     For i = UBound(xtTerminals, 1) - 1 To 0 Step -1
         For j = 0 To i
@@ -107,13 +107,13 @@ End Function
 
 
 '==============================================
-' Процедура вывода массива перед экспортом
+'     
 '==============================================
 Sub ShowArrayBeforeExport(dataArray)
     Dim i, outputStr
-    outputStr = "Массив для экспорта (" & UBound(dataArray, 1) + 1 & " строк):" & vbCrLf
+    outputStr = "   (" & UBound(dataArray, 1) + 1 & " ):" & vbCrLf
     outputStr = outputStr & "=========================" & vbCrLf
-    outputStr = outputStr & "Индекс | Номер клеммы | Поз. обозначение" & vbCrLf
+    outputStr = outputStr & " |   | . " & vbCrLf
     outputStr = outputStr & "-------------------------" & vbCrLf
     
     For i = 0 To UBound(dataArray, 1)
@@ -127,7 +127,7 @@ Sub ShowArrayBeforeExport(dataArray)
 End Sub
 
 '==============================================
-' Процедура экспорта в Excel (с очисткой и заливкой)
+'    Excel (   )
 '==============================================
 Sub ExportToExcel(dataArray, filePath, sheetName, startCell)
     On Error Resume Next
@@ -135,31 +135,31 @@ Sub ExportToExcel(dataArray, filePath, sheetName, startCell)
     Dim ExcelApp, ExcelBook, ExcelSheet
     Dim i, colNum, rowNum, lastRow
     
-    ' Разбираем адрес ячейки
+    '   
     colNum = Asc(UCase(Mid(startCell, 1, 1))) - 64 ' A=1, B=2...
     rowNum = CInt(Mid(startCell, 2))
     
     Set ExcelApp = CreateObject("Excel.Application")
-    ExcelApp.Visible = True ' Для отладки
+    ExcelApp.Visible = True '  
     
-    ' Пытаемся открыть файл по указанному пути
-    App.PutInfo 0, "Пытаюсь открыть файл: " & filePath
+    '      
+    App.PutInfo 0, "  : " & filePath
     Set ExcelBook = ExcelApp.Workbooks.Open(filePath)
     
     If Err.Number <> 0 Then
-        App.PutInfo 1, "Ошибка открытия файла " & filePath & ": " & Err.Description
+        App.PutInfo 1, "   " & filePath & ": " & Err.Description
         ExcelApp.Quit
         Set ExcelApp = Nothing
         WScript.Quit
     End If
     On Error GoTo 0
     
-    ' Ищем нужный лист
+    '   
     Set ExcelSheet = Nothing
     On Error Resume Next
     Set ExcelSheet = ExcelBook.Sheets(sheetName)
     If Err.Number <> 0 Then
-        App.PutInfo 1, "Лист '" & sheetName & "' не найден в файле " & filePath
+        App.PutInfo 1, " '" & sheetName & "'     " & filePath
         ExcelBook.Close False
         ExcelApp.Quit
         Set ExcelApp = Nothing
@@ -167,39 +167,39 @@ Sub ExportToExcel(dataArray, filePath, sheetName, startCell)
     End If
     On Error GoTo 0
     
-    ' Очищаем столбец E начиная с E2
-    App.PutInfo 0, "Очищаю столбец E перед вставкой данных..."
+    '   E   E2
+    App.PutInfo 0, "  E   ..."
     With ExcelSheet
-        ' Находим последнюю заполненную строку в столбце E
+        '       E
         lastRow = .Cells(.Rows.Count, 5).End(-4162).Row ' -4162 = xlUp
         
-        ' Если есть данные ниже E2 - очищаем
+        '     E2 - 
         If lastRow >= rowNum Then
             .Range(.Cells(rowNum, 5), .Cells(lastRow, 5)).ClearContents
         End If
     End With
     
-    ' Записываем данные
-    App.PutInfo 0, "Записываю " & UBound(dataArray, 1) + 1 & " строк в столбец E..."
+    '  
+    App.PutInfo 0, " " & UBound(dataArray, 1) + 1 & "    E..."
     For i = 0 To UBound(dataArray, 1)
         ExcelSheet.Cells(rowNum + i, colNum).Value = dataArray(i, 0)
     Next
     
-    ' Закрашиваем столбец E в желтый цвет (от E2 до последней заполненной ячейки)
-    App.PutInfo 0, "Закрашиваю столбец E в желтый цвет..."
+    '   E    ( E2    )
+    App.PutInfo 0, "  E   ..."
     With ExcelSheet
         lastRow = .Cells(.Rows.Count, 5).End(-4162).Row
-        If lastRow < rowNum Then lastRow = rowNum ' Если данных нет, закрашиваем только E2
+        If lastRow < rowNum Then lastRow = rowNum '   ,   E2
         
         With .Range(.Cells(rowNum, 5), .Cells(lastRow, 5)).Interior
-            .Color = 65535 ' Желтый цвет
-            .Pattern = 1   ' Сплошная заливка
+            .Color = 65535 '  
+            .Pattern = 1   '  
             .TintAndShade = 0
             .PatternTintAndShade = 0
         End With
     End With
     
-    ' Сохраняем и закрываем
+    '   
     ExcelBook.Save
     ExcelBook.Close
     ExcelApp.Quit
@@ -208,45 +208,45 @@ Sub ExportToExcel(dataArray, filePath, sheetName, startCell)
     Set ExcelBook = Nothing
     Set ExcelApp = Nothing
     
-    App.PutInfo 0, "Экспорт завершен: данные записаны и столбец E закрашен в " & filePath
+    App.PutInfo 0, " :     E   " & filePath
 End Sub
 
 
 '==============================================
-' Процедура формирования имени XLS файла
-' Возвращает полный путь к файлу в формате:
-' <путь_проекта>\<имя_проекта>.xls
-' с заменой "Sch2_" на "brk" и удалением ".e3d"
+'    XLS 
+'       :
+' <_>\<_>.xls
+'   "Sch2_"  "brk"   ".e3d"
 '==============================================
 Function GetExcelFileName(Job)
     Dim projectPath, projectName, excelFileName
     
-    ' Получаем путь проекта
+    '   
     projectPath = Job.GetPath()
     If Len("" & projectPath) = 0 Then
-        App.PutInfo 1, "Ошибка получения пути проекта"
+        App.PutInfo 1, "   "
         GetExcelFileName = ""
         Exit Function
     End If
     
-    ' Получаем имя проекта
+    '   
     projectName = Job.GetName()
     If Len("" & projectName) = 0 Then
-        App.PutInfo 1, "Ошибка получения имени проекта"
+        App.PutInfo 1, "   "
         GetExcelFileName = ""
         Exit Function
     End If
     
-    ' Заменяем "Sch2_" на "brk" в имени проекта
+    '  "Sch2_"  "brk"   
     projectName = Replace(projectName, "Sch2_", "brk", 1, -1, vbTextCompare)
     
-    ' Убираем расширение .e3d если есть (регистронезависимо)
+    '   .e3d   ()
     projectName = Replace(projectName, ".e3d", "", 1, -1, vbTextCompare)
     projectName = Replace(projectName, ".E3D", "", 1, -1, vbTextCompare)
     
-    ' Создаем имя файла Excel (без лишних суффиксов)
+    '    Excel (  )
     excelFileName = projectPath & "\" & projectName & ".xls"
     
-    App.PutInfo 0, "Сформирован путь к файлу Excel: " & excelFileName
+    App.PutInfo 0, "    Excel: " & excelFileName
     GetExcelFileName = excelFileName
 End Function
