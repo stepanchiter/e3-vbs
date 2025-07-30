@@ -22,7 +22,7 @@ Option Explicit
 Const EXCEL_SHEET_NAME = "Лист1"         ' Укажите имя листа в Excel, если оно отличается
 Const START_DATA_ROW = 3               ' Начальная строка для чтения данных в Excel
 ' >>> Добавлена новая настройка для пути к файлу Excel <<<
-Const EXCEL_FILE_PATH_DEFAULT = "C:\Users\SEK\Desktop\DWG_4_E3\Новая папка\ОДНОЛИН\ЗИС\ПРИНЦИП\запись атрибутов в модули.xlsx" ' Ваш путь к файлу Excel по умолчанию
+Const EXCEL_FILE_PATH_DEFAULT = "D:\E3_VBS_Scripts\projects\GIGA\EXEL\запись атрибутов в модули.xlsx" ' Ваш путь к файлу Excel по умолчанию
 
 ' --- Главная подпрограмма ---
 Call Main()
