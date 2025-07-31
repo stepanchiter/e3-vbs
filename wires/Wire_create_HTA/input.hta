@@ -24,9 +24,9 @@
                 Exit Sub
             End If
 
-            ' Передаем данные в основной скрипт
+            ' Передаем данные в основной скрипт с жестким путем
             Set WshShell = CreateObject("WScript.Shell")
-            WshShell.Run "cscript.exe 123.vbs " & Chr(34) & wiregroupName & Chr(34) & " " & Chr(34) & databaseWireName & Chr(34) & " " & Chr(34) & wireName & Chr(34) & " " & Chr(34) & signalName1 & Chr(34), 1, False
+            WshShell.Run "cscript.exe ""D:\E3_VBS_Scripts\wires\Wire_create_HTA\123.vbs"" " & Chr(34) & wiregroupName & Chr(34) & " " & Chr(34) & databaseWireName & Chr(34) & " " & Chr(34) & wireName & Chr(34) & " " & Chr(34) & signalName1 & Chr(34), 1, False
 
             ' Очищаем поля после отправки (опционально)
             document.getElementById("wireName").value = ""
