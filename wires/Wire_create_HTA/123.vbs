@@ -6,6 +6,7 @@ If WScript.Arguments.Count <> 4 Then
     WScript.Quit 1
 End If
 
+
 Dim wiregroupName, databaseWireName, wireName, signalName
 wiregroupName     = WScript.Arguments(0)
 databaseWireName  = WScript.Arguments(1)
