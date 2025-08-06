@@ -166,7 +166,7 @@ Sub SubGetColourFromSignalName(ByVal signalName, ByRef netSegmentLineColour, ByR
 		netSegmentLineStyle = "5"
 		netSegmentLineWidth = 1
 '×ÅÐÍÛÉ	×ÅÐÍÛÉ	×ÅÐÍÛÉ	×ÅÐÍÛÉ	×ÅÐÍÛÉ	×ÅÐÍÛÉ	×ÅÐÍÛÉ	×ÅÐÍÛÉ
-	ElseIf signalName = "L1.A" Or signalName = "-24D" Or signalName = "-24DI" Or signalName = "-24RLY" Or signalName = "-24P" Or signalName = "-24DI" Or signalName = "-24RLY" Or signalName = "-24KL" Or signalName = "-24VAV" Or signalName = "-24PDT" Or signalName = "-24AI" Or signalName = "-24AO" Then
+	ElseIf signalName = "L1.A" Or InStr(signalName, "-24") > 0 Then
 		netSegmentLineColour = "0"
 		netSegmentLineStyle = "4"
 		netSegmentLineWidth = 1	
@@ -179,11 +179,11 @@ Sub SubGetColourFromSignalName(ByVal signalName, ByRef netSegmentLineColour, ByR
 		netSegmentLineStyle = "4"
 		netSegmentLineWidth = 1
 'ÊÐÀÑÍÛÉ	ÊÐÀÑÍÛÉ  	ÊÐÀÑÍÛÉ	ÊÐÀÑÍÛÉ	ÊÐÀÑÍÛÉ	ÊÐÀÑÍÛÉ	ÊÐÀÑÍÛÉ		
-    ElseIf signalName = "L24" Or signalName = "N24" Or signalName = "N24_1" Or signalName = "24AC" Or signalName = "+24D" Or signalName = "+24DI" Or signalName = "+24RLY" Or signalName = "+24KL" Or signalName = "+24VAV" Or signalName = "+24PDT" Or signalName = "+24AI1" Or signalName = "+24AI2" Or signalName = "+24AI3" Or signalName = "+24AI4" Or signalName = "+24AI5" Or signalName = "+24AI6" Or signalName = "+24AI7" Or signalName = "+24AI8" Or signalName = "+24AO1" Or signalName = "+24AO2" Or signalName = "+24AO3" Then
-		netSegmentLineColour = "25"
-		netSegmentLineStyle = "4"
-		netSegmentLineWidth = 1		
-	End If
+    ElseIf signalName = "L24" Or signalName = "N24" Or signalName = "N24_1" Or signalName = "24AC" Or InStr(signalName, "+24") > 0 Then
+        netSegmentLineColour = "25"
+        netSegmentLineStyle = "4"
+        netSegmentLineWidth = 1        
+End If
 End Sub
 ' ===============================================================================================
 ' =============================
