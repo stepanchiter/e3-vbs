@@ -35,43 +35,48 @@ If result > 0 Then
     carHeight = 40    ' Высота кузова
     wheelRadius = 12  ' Радиус колес
 
-    ' Рисуем основной кузов (нижняя часть)
-    result = Graphic.CreateLine(sheetId, baseX + 20, baseY, baseX + carWidth - 20, baseY)                  ' Нижняя линия
-    result = Graphic.CreateLine(sheetId, baseX, baseY + 15, baseX + 20, baseY)                            ' Передний скос
-    result = Graphic.CreateLine(sheetId, baseX + carWidth - 20, baseY, baseX + carWidth, baseY + 15)      ' Задний скос
+    ' Базовые точки для кузова
+    Dim frontBottom : frontBottom = baseX + 20        ' Передняя нижняя точка
+    Dim rearBottom : rearBottom = baseX + carWidth - 20  ' Задняя нижняя точка
+    Dim bodyHeight : bodyHeight = baseY + 15          ' Высота основного кузова
 
+    ' Рисуем основной кузов (нижняя часть)
+    result = Graphic.CreateLine(sheetId, frontBottom, baseY, rearBottom, baseY)                ' Нижняя линия
+    result = Graphic.CreateLine(sheetId, baseX, bodyHeight, frontBottom, baseY)               ' Передний скос
+    result = Graphic.CreateLine(sheetId, rearBottom, baseY, baseX + carWidth, bodyHeight)     ' Задний скос
+    
     ' Рисуем верхнюю часть кузова (кабину)
     Dim cabinStartX : cabinStartX = baseX + 30
     Dim cabinWidth : cabinWidth = 50
-    result = Graphic.CreateLine(sheetId, cabinStartX, baseY + 15, cabinStartX, baseY + carHeight)         ' Передняя стойка
-    result = Graphic.CreateLine(sheetId, cabinStartX + cabinWidth, baseY + 15, cabinStartX + cabinWidth, baseY + carHeight) ' Задняя стойка
+    ' Убедимся, что стойки начинаются от линии кузова
+    result = Graphic.CreateLine(sheetId, cabinStartX, bodyHeight, cabinStartX, baseY + carHeight)         ' Передняя стойка
+    result = Graphic.CreateLine(sheetId, cabinStartX + cabinWidth, bodyHeight, cabinStartX + cabinWidth, baseY + carHeight) ' Задняя стойка
     result = Graphic.CreateLine(sheetId, cabinStartX, baseY + carHeight, cabinStartX + cabinWidth, baseY + carHeight) ' Крыша
     
     ' Рисуем окна
-    Dim windowHeight : windowHeight = 15
-    ' Лобовое стекло (наклонное)
-    result = Graphic.CreateLine(sheetId, cabinStartX - 10, baseY + 20, cabinStartX, baseY + carHeight)
-    ' Заднее стекло (наклонное)
-    result = Graphic.CreateLine(sheetId, cabinStartX + cabinWidth, baseY + carHeight, cabinStartX + cabinWidth + 10, baseY + 20)
+    ' Лобовое стекло (наклонное) - начинаем от стойки кабины
+    result = Graphic.CreateLine(sheetId, cabinStartX - 10, bodyHeight + 5, cabinStartX, baseY + carHeight)
+    ' Заднее стекло (наклонное) - начинаем от крыши
+    result = Graphic.CreateLine(sheetId, cabinStartX + cabinWidth, baseY + carHeight, cabinStartX + cabinWidth + 10, bodyHeight + 5)
 
     ' Рисуем колеса (передние и задние)
-    ' Переднее колесо
-    result = Graphic.CreateCircle(sheetId, baseX + 25, baseY, wheelRadius)
-    result = Graphic.CreateCircle(sheetId, baseX + 25, baseY, wheelRadius - 4) ' Внутренний круг
-    ' Заднее колесо
-    result = Graphic.CreateCircle(sheetId, baseX + carWidth - 25, baseY, wheelRadius)
-    result = Graphic.CreateCircle(sheetId, baseX + carWidth - 25, baseY, wheelRadius - 4) ' Внутренний круг
+    ' Переднее колесо - выравниваем с передним скосом
+    result = Graphic.CreateCircle(sheetId, frontBottom, baseY, wheelRadius)
+    result = Graphic.CreateCircle(sheetId, frontBottom, baseY, wheelRadius - 4) ' Внутренний круг
+    ' Заднее колесо - выравниваем с задним скосом
+    result = Graphic.CreateCircle(sheetId, rearBottom, baseY, wheelRadius)
+    result = Graphic.CreateCircle(sheetId, rearBottom, baseY, wheelRadius - 4) ' Внутренний круг
 
     ' Рисуем фары
     Dim headlightRadius : headlightRadius = 5
-    ' Передняя фара
-    result = Graphic.CreateCircle(sheetId, baseX + 5, baseY + 20, headlightRadius)
-    ' Задняя фара
-    result = Graphic.CreateCircle(sheetId, baseX + carWidth - 5, baseY + 20, headlightRadius)
+    ' Передняя фара - привязываем к переднему скосу
+    result = Graphic.CreateCircle(sheetId, baseX + 5, bodyHeight, headlightRadius)
+    ' Задняя фара - привязываем к заднему скосу
+    result = Graphic.CreateCircle(sheetId, baseX + carWidth - 5, bodyHeight, headlightRadius)
 
-    ' Рисуем бампера
-    result = Graphic.CreateLine(sheetId, baseX - 5, baseY + 10, baseX + 10, baseY + 10)     ' Передний бампер
-    result = Graphic.CreateLine(sheetId, baseX + carWidth - 10, baseY + 10, baseX + carWidth + 5, baseY + 10) ' Задний бампер
+    ' Рисуем бампера - выравниваем с фарами
+    result = Graphic.CreateLine(sheetId, baseX - 5, bodyHeight, baseX + 10, bodyHeight)     ' Передний бампер
+    result = Graphic.CreateLine(sheetId, baseX + carWidth - 10, bodyHeight, baseX + carWidth + 5, bodyHeight) ' Задний бампер
 
     ' Рисуем декоративные элементы
     ' Решетка радиатора
