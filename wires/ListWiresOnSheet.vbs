@@ -4,6 +4,11 @@ Set Device = Job.CreateDeviceObject()
 Set Sheet = Job.CreateSheetObject()
 Set Pin = Job.CreatePinObject()
 
+' Объявляем массивы
+Dim sheetIds()
+Dim netIds()
+Dim coreIds()
+
 ' Создаём объект tree для работы с деревом проекта
 Dim Tree
 Set Tree = Job.CreateTreeObject
@@ -38,6 +43,7 @@ For selectedNum = 1 To sheetCount
 
 ' Получаем цепи на листе
 Dim netCount : netCount = Sheet.GetNetIds(netIds)
+If netCount = 0 Then ReDim netIds(0)
 App.PutInfo 0, "=============== Провода на листе " & selectedSheetName & " ==============="
 
 If netCount = 0 Then
@@ -53,6 +59,7 @@ Else
         
         ' Получаем все жилы в цепи
         Dim coreCount : coreCount = Net.GetCoreIds(coreIds)
+        If coreCount = 0 Then ReDim coreIds(0)
         If coreCount > 0 Then
             ' Перебираем жилы
             For j = 1 To coreCount
@@ -68,8 +75,8 @@ Else
                     Dim signalName : signalName = Pin.GetSignalName()
                     Dim colorDesc : colorDesc = Pin.GetColourDescription()
                     
-                    ' Выводим информацию
-                    App.PutInfo 0, wireCount & ". ID: " & wireId & ", Имя: " & wireName & ", Цепь: " & signalName & ", Цвет: " & colorDesc
+                    ' Выводим информацию с кликабельным ID
+                    App.PutMessageEx 0, wireCount & ". " & wireName & " (Цепь: " & signalName & ", Цвет: " & colorDesc & ", CoreID: " & coreIds(j) & ")", wireId, 0, 0, 0
                 End If
             Next
         End If

@@ -3,42 +3,34 @@
 Set App = CreateObject("CT.Application")
 Set Job = App.CreateJobObject()
 
-' Создаём объект листа
-Set Sheet = Job.CreateSheetObject()
-
-' Параметры для создания листа
-Dim moduleId, sheetName, symbolName, position, isBeforePosition
-moduleId = 0                        ' Без модуля
-sheetName = "Smile"                ' Имя листа
-symbolName = "Формат_А3_гор_1лист"               ' Формат A4 из базы данных Misc_Sheet
-position = 0                       ' В конец проекта
-isBeforePosition = 0              ' После указанной позиции
-
 ' Создаём новый лист
-Dim sheetId, result, message
-result = Sheet.Create(moduleId, sheetName, symbolName, position, isBeforePosition)
+Set Sheet = Job.CreateSheetObject()
+Sheet.SetName "Smile"
+Sheet.SetFormat "A4"
+' Sheet.SetOrientation 1 ' 1 = альбомная, 0 = книжная
 
-' Проверяем успешность создания
-If result > 0 Then
-    sheetId = result
-    
-    ' Создаем объект для рисования
-    Set Graphic = Job.CreateGraphObject()
-    
-    ' Координаты центра смайлика
-    Dim centerX, centerY, radius
-    centerX = 100
-    centerY = 100
-    radius = 50
+' Координаты центра смайлика
+Dim centerX, centerY, radius
+centerX = 100
+centerY = 100
+radius = 50
+
+Set Graphic = Job.CreateGraphObject()
+
+Dim sheetCount, sheetIds, sheetId, result, message
+sheetCount = Job.GetTreeSelectedSheetIds(sheetIds)
+
+If sheetCount > 0 Then
+    sheetId = Sheet.SetId(sheetIds(1))
     If sheetId > 0 Then
         ' Рисуем лицо (окружность)
         result = Graphic.CreateCircle(sheetId, centerX, centerY, radius)
         ' Рисуем левый глаз
-        result = Graphic.CreateCircle(sheetId, centerX - 20, centerY + 25, 5)
+        result = Graphic.CreateCircle(sheetId, centerX - 20, centerY - 15, 5)
         ' Рисуем правый глаз
-        result = Graphic.CreateCircle(sheetId, centerX + 20, centerY + 25, 5)
+        result = Graphic.CreateCircle(sheetId, centerX + 20, centerY - 15, 5)
         ' Рисуем улыбку (дуга)
-        result = Graphic.CreateArc(sheetId, centerX, centerY - 15, 25, 200, 340)
+        result = Graphic.CreateArc(sheetId, centerX, centerY + 10, 25, 200, 340)
 
         If result = 0 Then
             message = "Ошибка при создании графики"
