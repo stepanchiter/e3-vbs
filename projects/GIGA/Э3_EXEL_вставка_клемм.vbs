@@ -16,7 +16,7 @@ Const START_DATA_ROW = 3               ' Начальная строка для чтения данных в Ex
 ' >>> Путь к файлу Excel по умолчанию <<<
 Const EXCEL_FILE_PATH_DEFAULT = "C:\Users\SEK\Desktop\DWG_4_E3\Новая папка\ОДНОЛИН\ЗИС\ПРИНЦИП\ЩУ2\запись атрибутов в модули.xlsx"
 ' >>> Настройки для вставки фрагмента <<<
-Const FRAGMENT_PATH = "C:\Users\SEK\Desktop\DWG_4_E3\Новая папка\ОДНОЛИН\фрагменты\terminal2.e3p"
+Const FRAGMENT_PATH = "C:\Users\SEK\Desktop\DWG_4_E3\Гига_спец\terminal2.e3p"
 Const Y_OFFSET = 150                    ' Смещение по Y от координат пина (отнимаем от Y)
 
 ' --- Главная подпрограмма ---
@@ -251,7 +251,7 @@ Sub Main()
                         ' --- Переименование устройств -sXT1 после успешной вставки фрагмента ---
                         If fragmentResult = 0 Then
                             e3App.PutInfo 0, "Строка " & currentRow & ": Фрагмент успешно вставлен. Запуск переименования устройств -sXT1..."
-                            Call RenameDevicesAfterFragment(job, e3App, currentRow, masterPin1, masterPin2)
+                            Call RenameDevicesAfterFragment(job, e3App, currentRow, fragmentCondition, masterPin1, masterPin2)
                         Else
                             e3App.PutInfo 1, "Строка " & currentRow & ": Фрагмент не вставлен (код: " & fragmentResult & "). Переименование не выполняется."
                         End If
@@ -313,7 +313,7 @@ Function PlaceFragmentOnSheet(sheet, sheetId, fragmentPath, version, xPosition, 
 End Function
 
 ' --- Функция переименования устройств -sXT1 в -XT666 после вставки фрагмента ---
-Sub RenameDevicesAfterFragment(job, e3App, rowNumber, masterPin1Value, masterPin2Value)
+Sub RenameDevicesAfterFragment(job, e3App, rowNumber, newDeviceName, masterPin1Value, masterPin2Value)
     On Error Resume Next
     
     Dim renameDevice
@@ -377,14 +377,17 @@ Sub RenameDevicesAfterFragment(job, e3App, rowNumber, masterPin1Value, masterPin
             
             e3App.PutInfo 0, "Строка " & rowNumber & ": --- Обработка устройства #" & foundCount & " ---"
             
-            ' Переименование устройства
-            newName = "-XT666"
-            resultSet = renameDevice.SetName(newName)
-            
-            If resultSet = 0 Then
-                e3App.PutInfo 0, "Строка " & rowNumber & ": Ошибка при переименовании устройства #" & foundCount
+            ' Переименование устройства в значение из столбца H
+            If Len(Trim(newDeviceName)) > 0 Then
+                resultSet = renameDevice.SetName(newDeviceName)
+                
+                If resultSet = 0 Then
+                    e3App.PutInfo 0, "Строка " & rowNumber & ": Ошибка при переименовании устройства #" & foundCount & " в '" & newDeviceName & "'"
+                Else
+                    e3App.PutInfo 0, "Строка " & rowNumber & ": Устройство #" & foundCount & " переименовано в '" & newDeviceName & "'"
+                End If
             Else
-                e3App.PutInfo 0, "Строка " & rowNumber & ": Устройство #" & foundCount & " переименовано в " & newName
+                e3App.PutInfo 1, "Строка " & rowNumber & ": Новое имя устройства (столбец H) пустое. Устройство #" & foundCount & " не переименовано."
             End If
             
             ' Установка мастерпина
