@@ -1,3 +1,4 @@
+                    App.PutInfo 0, "Атрибут 'Класс соединения (Компоновка)' установлен для coreID: " & coreIds(j)
 Set App = CreateObject("CT.Application")
 Set Job = App.CreateJobObject()
 Set Device = Job.CreateDeviceObject()
@@ -77,6 +78,8 @@ Else
                     
                     ' Выводим информацию с кликабельным ID
                     App.PutMessageEx 0, wireCount & ". " & " (Цепь: " & signalName & ", Цвет: " & colorDesc & ", CoreID: " & coreIds(j) & ")", coreIds(j), 0, 0, 0
+                        ' Устанавливаем атрибут "Класс соединения (Компоновка)" для core
+                        Pin.SetAttributeValue "Класс соединения (Компоновка)", "230/400V"
                 End If
             Next
         End If
