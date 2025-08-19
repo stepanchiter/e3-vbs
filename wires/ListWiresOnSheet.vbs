@@ -76,7 +76,7 @@ Else
                     Dim colorDesc : colorDesc = Pin.GetColourDescription()
                     
                     ' Выводим информацию с кликабельным ID
-                    App.PutMessageEx 0, wireCount & ". " & wireName & " (Цепь: " & signalName & ", Цвет: " & colorDesc & ", CoreID: " & coreIds(j) & ")", wireId, 0, 0, 0
+                    App.PutMessageEx 0, wireCount & ". " & " (Цепь: " & signalName & ", Цвет: " & colorDesc & ", CoreID: " & coreIds(j) & ")", coreIds(j), 0, 0, 0
                 End If
             Next
         End If

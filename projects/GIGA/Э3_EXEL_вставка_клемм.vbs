@@ -14,7 +14,7 @@ Option Explicit
 Const EXCEL_SHEET_NAME = "Лист1"         ' Укажите имя листа в Excel, если оно отличается
 Const START_DATA_ROW = 3               ' Начальная строка для чтения данных в Excel
 ' >>> Путь к файлу Excel по умолчанию <<<
-Const EXCEL_FILE_PATH_DEFAULT = "C:\Users\SEK\Desktop\DWG_4_E3\Новая папка\ОДНОЛИН\ЗИС\ПРИНЦИП\ЩУ2\запись атрибутов в модули.xlsx"
+Const EXCEL_FILE_PATH_DEFAULT = "C:\Users\SEK\Desktop\DWG_4_E3\Новая папка\ОДНОЛИН\ЗИС\ПРИНЦИП\ЩУ1\запись атрибутов в модули_ЩУ1.xlsx"
 ' >>> Настройки для вставки фрагмента <<<
 Const FRAGMENT_PATH = "C:\Users\SEK\Desktop\DWG_4_E3\Гига_спец\terminal2.e3p"
 Const Y_OFFSET = 150                    ' Смещение по Y от координат пина (отнимаем от Y)
