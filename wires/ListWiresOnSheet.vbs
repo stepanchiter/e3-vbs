@@ -1,4 +1,3 @@
-                    App.PutInfo 0, "Атрибут 'Класс соединения (Компоновка)' установлен для coreID: " & coreIds(j)
 Set App = CreateObject("CT.Application")
 Set Job = App.CreateJobObject()
 Set Device = Job.CreateDeviceObject()
